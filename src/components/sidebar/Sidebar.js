@@ -1,9 +1,53 @@
+/**
+ * This is the Sidebar component. This is shown on medium and large width by default and only shown upon clicking hamburger menu in small width
+*/
 import React from 'react';
 import './_sidebar.scss';
+//icons
+import {
+    MdSubscriptions,
+    MdExitToApp,
+    MdThumbUp,
+    MdHistory,
+    MdLibraryBooks,
+    MdHome,
+    MdSentimentDissatisfied
+} from "react-icons/md";
 
-const Sidebar = () => {
+const Sidebar = ({ sidebar, handleToggleSidebar }) => {
     return (
-        <div className="border border-danger">Sidebar</div>
+        <nav className={sidebar ? "sidebar open" : "sidebar"} onClick={handleToggleSidebar}>
+            <ul>
+                <li>
+                    <MdHome size={23} />
+                    <span>Home</span>
+                </li>
+                <li>
+                    <MdSubscriptions size={23} />
+                    <span>Subscriptions</span>
+                </li>
+                <li>
+                    <MdHistory size={23} />
+                    <span>History</span>
+                </li>
+                <li>
+                    <MdThumbUp size={23} />
+                    <span>Liked videos</span>
+                </li>
+                <li>
+                    <MdLibraryBooks size={23} />
+                    <span>Library</span>
+                </li>
+                <li>
+                    <MdSentimentDissatisfied size={23} />
+                    <span>Dissatisfied</span>
+                </li>
+                <li>
+                    <MdExitToApp size={23} />
+                    <span>Logout</span>
+                </li>
+            </ul>
+        </nav>
     )
 }
 
