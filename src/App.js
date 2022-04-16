@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 //bootstrap
 import { Container } from 'react-bootstrap';
 import Header from './components/header/Header';
@@ -7,8 +7,9 @@ import HomeScreen from './components/screens/homeScreen/HomeScreen';
 import LoginScreen from './components/loginScreen/LoginScreen';
 
 //router
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Routes, Route, useNavigate } from "react-router-dom";
 import './_app.scss';
+import { useSelector } from 'react-redux';
 
 const Layout = ({ children }) => {
     // toggle sidebar state
@@ -30,14 +31,23 @@ const Layout = ({ children }) => {
 
 const App = () => {
 
-    return (<BrowserRouter>
+    const { accessToken, loading } = useSelector(state => state.auth);
+    const history = useNavigate();
+    // redirect user to auth page if user is unautenticated
+    useEffect(() => {
+        if (!loading && !accessToken) {
+            history('/auth');
+        }
+    }, [accessToken, loading, history])
+
+
+    return (
         <Routes>
             <Route path="/" element={<Layout><HomeScreen /></Layout>} />
             <Route path="/auth" element={<LoginScreen />} />
             <Route path="/search" element={<Layout><h1>Search Results</h1></Layout>} />
             <Route path="*" element={"No match found"} />
         </Routes>
-    </BrowserRouter>
     )
 }
 
