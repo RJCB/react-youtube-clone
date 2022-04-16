@@ -1,3 +1,4 @@
+// This action handles the authentication - Login and Logout
 import firebase from "firebase/compat/app";
 import auth from "../../firebase";
 import { LOAD_PROFILE, LOGIN_FAIL, LOGIN_REQUEST, LOGIN_SUCCESS, LOG_OUT } from "../actionTypes";

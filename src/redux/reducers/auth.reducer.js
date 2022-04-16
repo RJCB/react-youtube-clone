@@ -1,3 +1,4 @@
+//Handles Authentication actions
 import { LOAD_PROFILE, LOGIN_FAIL, LOGIN_REQUEST, LOGIN_SUCCESS, LOG_OUT } from "../actionTypes"
 
 const intialState = {
