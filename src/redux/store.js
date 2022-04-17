@@ -6,7 +6,7 @@ import { homeVideoReducer } from "./reducers/videos.reducer";
 
 const rootReducer = combineReducers({
     auth: authReducer,
-    homeVideoReducer: homeVideoReducer
+    homeVideos: homeVideoReducer
 })
 const store = createStore(rootReducer, {}, composeWithDevTools(applyMiddleware(thunk)));
 

@@ -6,10 +6,12 @@ import Sidebar from './components/sidebar/Sidebar';
 import HomeScreen from './components/screens/homeScreen/HomeScreen';
 import LoginScreen from './components/loginScreen/LoginScreen';
 
+
 //router
 import { Routes, Route, useNavigate } from "react-router-dom";
 import './_app.scss';
 import { useSelector } from 'react-redux';
+import WatchScreen from './components/watchscreen/WatchScreen';
 
 const Layout = ({ children }) => {
     // toggle sidebar state
@@ -46,6 +48,7 @@ const App = () => {
             <Route path="/" element={<Layout><HomeScreen /></Layout>} />
             <Route path="/auth" element={<LoginScreen />} />
             <Route path="/search" element={<Layout><h1>Search Results</h1></Layout>} />
+            <Route path="/watch/:id" element={<Layout><WatchScreen /></Layout>} />
             <Route path="*" element={"No match found"} />
         </Routes>
     )
