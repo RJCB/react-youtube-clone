@@ -8,6 +8,7 @@ import { useState } from 'react';
 import moment from "moment";
 import numeral from 'numeral';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
+import { useNavigate } from 'react-router-dom';
 
 const Video = ({ video }) => {
 
@@ -18,6 +19,7 @@ const Video = ({ video }) => {
     const seconds = moment.duration(duration).asSeconds();
     const videoDuration = moment.utc(seconds * 1000).format("mm:ss");
     const videoId = id?.videoId || id;//check if id is an object if so, return id.videoId or just id as is. Reason is when we fetch category based videos the response an object for id 
+    const history = useNavigate();
     useEffect(() => {
         const getVideoDetails = async () => {
             const { data: { items } } = await request('/videos', {
@@ -45,8 +47,11 @@ const Video = ({ video }) => {
         getChannelIcon();
     }, [channelId])
 
+    const handleVideoClick = () => {
+        history(`/watch/{_videoId}`);
+    }
     return (
-        <div className="video">
+        <div className="video" onClick={handleVideoClick}>
             <div className="video__top">
                 {/* <img src={medium.url} alt="" /> */}
                 <LazyLoadImage src={medium.url} effect="blur" />
