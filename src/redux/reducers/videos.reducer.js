@@ -1,4 +1,4 @@
-import { HOME_VIDEOS_FAIL, HOME_VIDEOS_REQUEST, HOME_VIDEOS_SUCCESS, SELECTED_VIDEO_REQUEST, SELECTED_VIDEO_SUCCESS, SELECTED_VIDEO_FAIL } from "../actionTypes";
+import { HOME_VIDEOS_FAIL, HOME_VIDEOS_REQUEST, HOME_VIDEOS_SUCCESS, SELECTED_VIDEO_REQUEST, SELECTED_VIDEO_SUCCESS, SELECTED_VIDEO_FAIL, RELATED_VIDEO_REQUEST, RELATED_VIDEO_SUCCESS, RELATED_VIDEO_FAIL, SEARCHED_VIDEO_REQUEST, SEARCHED_VIDEO_SUCCESS, SEARCHED_VIDEO_FAIL, SUBSCRIPTIONS_CHANNEL_SUCCESS, SUBSCRIPTIONS_CHANNEL_REQUEST, SUBSCRIPTIONS_CHANNEL_FAIL } from "../actionTypes";
 
 const initialState = {
     videos: [],
@@ -49,6 +49,83 @@ export const selectedVideoReducer = (prevState = { loading: true, video: null },
             return {
                 ...prevState,
                 video: null,
+                loading: false,
+                error: payload
+            }
+        default:
+            return prevState;
+    }
+}
+export const relatedVideoReducer = (prevState = { loading: true, videos: null }, action) => {
+    const { payload, type } = action
+
+    switch (type) {
+        case RELATED_VIDEO_REQUEST:
+            return {
+                ...prevState,
+                loading: true
+            }
+        case RELATED_VIDEO_SUCCESS:
+            return {
+                ...prevState,
+                videos: payload,
+                loading: false
+            }
+        case RELATED_VIDEO_FAIL:
+            return {
+                ...prevState,
+                loading: false,
+                error: payload
+            }
+        default:
+            return prevState;
+    }
+}
+
+export const searchedVideoReducer = (prevState = { loading: true, videos: null }, action) => {
+    const { payload, type } = action
+
+    switch (type) {
+        case SEARCHED_VIDEO_REQUEST:
+            return {
+                ...prevState,
+                loading: true
+            }
+        case SEARCHED_VIDEO_SUCCESS:
+            return {
+                ...prevState,
+                videos: payload,
+                loading: false
+            }
+        case SEARCHED_VIDEO_FAIL:
+            return {
+                ...prevState,
+                loading: false,
+                error: payload
+            }
+        default:
+            return prevState;
+    }
+}
+
+export const subscriptionsChannelReducer = (prevState = { loading: true, videos: null }, action) => {
+    const { payload, type } = action
+
+    switch (type) {
+        case SUBSCRIPTIONS_CHANNEL_REQUEST:
+            return {
+                ...prevState,
+                loading: true
+            }
+        case SUBSCRIPTIONS_CHANNEL_SUCCESS:
+            return {
+                ...prevState,
+                videos: payload,
+                loading: false
+            }
+        case SUBSCRIPTIONS_CHANNEL_FAIL:
+            return {
+                ...prevState,
                 loading: false,
                 error: payload
             }

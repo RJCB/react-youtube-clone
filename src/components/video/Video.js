@@ -11,29 +11,31 @@ import { LazyLoadImage } from 'react-lazy-load-image-component';
 import { useNavigate } from 'react-router-dom';
 
 const Video = ({ video }) => {
-
-    const { id, snippet: { channelId, channelTitle, title, publishedAt, thumbnails: { medium } } } = video;
-    const [views, setViews] = useState(null);
-    const [duration, setDuration] = useState(null);
+    console.log(video, "video");
+    const { id, snippet: { channelId, channelTitle, title, publishedAt, thumbnails: { medium } }, contentDetails: { duration }, statistics: { viewCount } } = video;
+    // const [views, setViews] = useState(null);
+    // const [duration, setDuration] = useState(null);
     const [channelIcon, setChannelIcon] = useState(null);
     const seconds = moment.duration(duration).asSeconds();
     const videoDuration = moment.utc(seconds * 1000).format("mm:ss");
-    const videoId = id?.videoId || id;//check if id is an object if so, return id.videoId or just id as is. Reason is when we fetch category based videos the response an object for id 
+    const _videoId = id?.videoId || id;//check if id is an object if so, return id.videoId or just id as is. Reason is when we fetch category based videos the response an object for id 
     const history = useNavigate();
-    useEffect(() => {
-        const getVideoDetails = async () => {
-            const { data: { items } } = await request('/videos', {
-                params: {
-                    part: 'contentDetails,statistics',
-                    id: videoId
-                }
-            })
-            setDuration(items[0].contentDetails.duration);
-            setViews(items[0].statistics.viewCount);
-        }
-        getVideoDetails();
-    }, [videoId])
+    // fetch video duration, view count
+    // useEffect(() => {
+    //     const getVideoDetails = async () => {
+    //         const { data: { items } } = await request('/videos', {
+    //             params: {
+    //                 part: 'contentDetails,statistics',
+    //                 id: _videoId
+    //             }
+    //         })
+    //         setDuration(items[0].contentDetails.duration);
+    //         setViews(items[0].statistics.viewCount);
+    //     }
+    //     getVideoDetails();
+    // }, [_videoId])
 
+    // fetch channel icon
     useEffect(() => {
         const getChannelIcon = async () => {
             const { data: { items } } = await request('/channels', {
@@ -48,7 +50,7 @@ const Video = ({ video }) => {
     }, [channelId])
 
     const handleVideoClick = () => {
-        history(`/watch/{_videoId}`);
+        history(`/watch/${_videoId}`);
     }
     return (
         <div className="video" onClick={handleVideoClick}>
@@ -62,7 +64,7 @@ const Video = ({ video }) => {
             </div>
             <div className="video__details">
                 <span>
-                    <AiFillEye />{numeral(views).format("0.a")} views •
+                    <AiFillEye />{numeral(viewCount).format("0.a").toUpperCase()} views •{' '}
                 </span>
                 <span>{moment(publishedAt).fromNow()}</span>
             </div>

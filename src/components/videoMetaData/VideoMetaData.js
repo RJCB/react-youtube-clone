@@ -5,17 +5,21 @@ import { MdThumbUp, MdThumbDown } from "react-icons/md";
 import ShowMoreText from "react-show-more-text";
 import "./_videoMetaData.scss";
 import { useDispatch, useSelector } from "react-redux";
-import { getChannelDetails } from "../../redux/actions/channel.action";
+import { checkSubscriptionStatus, getChannelDetails } from "../../redux/actions/channel.action";
 
 const VideoMetaData = ({ video: { snippet, statistics }, videoId }) => {
     const { channelId, channelTitle, description, title, publishedAt } = snippet;
     const { viewCount, likeCount, dislikeCount } = statistics;
     const dispatch = useDispatch();
-    //rename snippet and statistics being pulled from global state to channelSnippet and channelStatistics as they are already defined at the top
-    const { snippet: channelSnippet, statistics: channelStatistics } = useSelector(state => state.channelDetails.channel)
+
+    //fetch channel details: thumbnail
     useEffect(() => {
         dispatch(getChannelDetails(channelId));
+        dispatch(checkSubscriptionStatus(channelId));
     }, [dispatch, channelId]);
+    //rename snippet and statistics being pulled from global state to channelSnippet and channelStatistics as they are already defined at the top
+    const { snippet: channelSnippet, statistics: channelStatistics } = useSelector(state => state.channelDetails.channel);
+    const subscriptionStatus = useSelector(state => state.channelDetails.subscriptionStatus);
 
     return (
         <div className='py-2 videoMetaData'>
@@ -27,10 +31,10 @@ const VideoMetaData = ({ video: { snippet, statistics }, videoId }) => {
                         {moment(publishedAt).fromNow()}
                     </span>
                     <div>
-                        <span className="mr-3">
+                        <span className="mx-3">
                             <MdThumbUp size={26} />{numeral(likeCount).format("0.a")}
                         </span>
-                        <span className="mr-3">
+                        <span className="mx-3">
                             <MdThumbDown size={26} />{numeral(dislikeCount).format("0.a")}
                         </span>
                     </div>
@@ -38,14 +42,14 @@ const VideoMetaData = ({ video: { snippet, statistics }, videoId }) => {
             </div>
             <div className="py-3 my-2 videoMetaData__channel d-flex justify-content-between align-items-center">
                 <div className="d-flex">
-                    <img src={channelSnippet?.thumbnails?.default?.url} alt="" className="mr-3 rounded-circle" />
+                    <img src={channelSnippet?.thumbnails?.default?.url} alt="" className="mx-3 rounded-circle" />
                     <div className="d-flex flex-column">
                         <span>{channelTitle}</span>
-                        <span>{numeral(channelStatistics?.subscriberCount).format("0.a")} Subscribers</span>
+                        <span>{numeral(channelStatistics?.subscriberCount).format("0.a").toUpperCase()} Subscribers</span>
                     </div>
                 </div>
-                <button className="btn border-0 p-2 m-2">
-                    Subscribe
+                <button className={`btn border-0 p-2 m-2 ${subscriptionStatus ? 'btn-gray' : ''}`}>
+                    {subscriptionStatus ? 'Subscribed' : 'Subscribe'}
                 </button>
             </div>
             <div className="videoMetaData__description">

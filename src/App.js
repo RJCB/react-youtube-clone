@@ -5,6 +5,8 @@ import Header from './components/header/Header';
 import Sidebar from './components/sidebar/Sidebar';
 import HomeScreen from './components/screens/homeScreen/HomeScreen';
 import LoginScreen from './components/loginScreen/LoginScreen';
+import SearchScreen from './components/screens/SearchScreen';
+import SubscriptionsScreen from './components/screens/subscriptionsScreen/SubscriptionsScreen';
 
 
 //router
@@ -47,8 +49,10 @@ const App = () => {
         <Routes>
             <Route path="/" element={<Layout><HomeScreen /></Layout>} />
             <Route path="/auth" element={<LoginScreen />} />
-            <Route path="/search" element={<Layout><h1>Search Results</h1></Layout>} />
+            <Route path="/search/:query" element={<Layout><SearchScreen /></Layout>} />
             <Route path="/watch/:id" element={<Layout><WatchScreen /></Layout>} />
+            <Route path="/feed/subscriptions" element={<Layout><SubscriptionsScreen /></Layout>} />
+            {/* <Route path="/channel/:channelId" element={<Layout><ChannelScreen /></Layout>} /> */}
             <Route path="*" element={"No match found"} />
         </Routes>
     )
