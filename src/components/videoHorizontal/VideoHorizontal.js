@@ -11,7 +11,7 @@ import { Row, Col } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 
 const VideoHorizontal = ({ video, searchScreen, subscriptionScreen }) => {
-    const { id, snippet: { channelId, channelTitle, description, title, publishedAt, thumbnails: { medium } }, resourceId } = video;
+    const { id, snippet: { channelId, channelTitle, description, title, publishedAt, thumbnails: { medium }, resourceId } } = video;
     const [views, setViews] = useState(null);
     const [duration, setDuration] = useState(null);
     const [channelIcon, setChannelIcon] = useState(null);

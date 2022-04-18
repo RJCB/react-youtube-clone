@@ -1,4 +1,4 @@
-import { HOME_VIDEOS_FAIL, HOME_VIDEOS_REQUEST, HOME_VIDEOS_SUCCESS, RELATED_VIDEO_FAIL, RELATED_VIDEO_REQUEST, RELATED_VIDEO_SUCCESS, SEARCHED_VIDEO_FAIL, SEARCHED_VIDEO_REQUEST, SEARCHED_VIDEO_SUCCESS, SELECTED_VIDEO_FAIL, SELECTED_VIDEO_REQUEST, SELECTED_VIDEO_SUCCESS, SUBSCRIPTIONS_CHANNEL_FAIL, SUBSCRIPTIONS_CHANNEL_REQUEST, SUBSCRIPTIONS_CHANNEL_SUCCESS } from "../actionTypes";
+import { CHANNEL_VIDEOS_FAIL, CHANNEL_VIDEOS_REQUEST, CHANNEL_VIDEOS_SUCCESS, HOME_VIDEOS_FAIL, HOME_VIDEOS_REQUEST, HOME_VIDEOS_SUCCESS, RELATED_VIDEO_FAIL, RELATED_VIDEO_REQUEST, RELATED_VIDEO_SUCCESS, SEARCHED_VIDEO_FAIL, SEARCHED_VIDEO_REQUEST, SEARCHED_VIDEO_SUCCESS, SELECTED_VIDEO_FAIL, SELECTED_VIDEO_REQUEST, SELECTED_VIDEO_SUCCESS, SUBSCRIPTIONS_CHANNEL_FAIL, SUBSCRIPTIONS_CHANNEL_REQUEST, SUBSCRIPTIONS_CHANNEL_SUCCESS } from "../actionTypes";
 import request from "../../api";
 
 //fetch popular videos to be displayed on the homepage
@@ -155,7 +155,7 @@ export const getVideosBySearch = (keyword) => async (dispatch) => {
 
 
 //Fetch user subscriptions
-export const getVideosByChannel = () => async (dispatch, getState) => {
+export const getSubscribedChannel = () => async (dispatch, getState) => {
     try {
         dispatch({
             type: SUBSCRIPTIONS_CHANNEL_REQUEST
@@ -178,6 +178,43 @@ export const getVideosByChannel = () => async (dispatch, getState) => {
         console.log(error.message);
         dispatch({
             type: SUBSCRIPTIONS_CHANNEL_FAIL,
+            payload: error.message
+        })
+    }
+}
+
+export const getVideoByChannel = (id) => async (dispatch) => {
+    try {
+        dispatch({
+            type: CHANNEL_VIDEOS_REQUEST
+        })
+        /** Fetching videos of a channel is a two step process
+         * 1. get upload playlist id - uploads
+         * */
+        const { data } = await request.get("/subscriptions", {
+            params: {
+                part: "contentDetails",
+                id: id
+            }
+        })
+
+        const uploadPlaylistId = data.items[0].contentDetails.relatedPlaylists.uploads
+        //2. get the videos using the uploads id
+        const { playlistData } = await request.get("/playlistItems", {
+            params: {
+                part: "contentDetails,snippet",
+                playlistId: uploadPlaylistId,
+                maxResults: 30
+            }
+        })
+        dispatch({
+            type: CHANNEL_VIDEOS_SUCCESS,
+            payload: playlistData.items
+        })
+    } catch (error) {
+        console.log(error.message);
+        dispatch({
+            type: CHANNEL_VIDEOS_FAIL,
             payload: error.message
         })
     }

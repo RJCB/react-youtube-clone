@@ -10,15 +10,15 @@ import numeral from 'numeral';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 import { useNavigate } from 'react-router-dom';
 
-const Video = ({ video }) => {
+const Video = ({ video, channelScreen }) => {
     console.log(video, "video");
-    const { id, snippet: { channelId, channelTitle, title, publishedAt, thumbnails: { medium } }, contentDetails: { duration }, statistics: { viewCount } } = video;
+    const { id, snippet: { channelId, channelTitle, title, publishedAt, thumbnails: { medium } }, contentDetails, statistics: { viewCount } } = video;
     // const [views, setViews] = useState(null);
     // const [duration, setDuration] = useState(null);
     const [channelIcon, setChannelIcon] = useState(null);
-    const seconds = moment.duration(duration).asSeconds();
+    const seconds = moment.duration(contentDetails.duration).asSeconds();
     const videoDuration = moment.utc(seconds * 1000).format("mm:ss");
-    const _videoId = id?.videoId || id;//check if id is an object if so, return id.videoId or just id as is. Reason is when we fetch category based videos the response an object for id 
+    const _videoId = id?.videoId || contentDetails?.videoId || id;//check if id is an object if so, return id.videoId or just id as is. Reason is when we fetch category based videos the response an object for id 
     const history = useNavigate();
     // fetch video duration, view count
     // useEffect(() => {
@@ -68,11 +68,13 @@ const Video = ({ video }) => {
                 </span>
                 <span>{moment(publishedAt).fromNow()}</span>
             </div>
-            <div className="video__channel">
-                {/* <img src={channelIcon?.url} alt={channelTitle} /> */}
-                <LazyLoadImage src={channelIcon?.url} alt={channelTitle} effect="blur" />
-                <p>{channelTitle}</p>
-            </div>
+            {!channelScreen &&
+                <div className="video__channel">
+                    {/* <img src={channelIcon?.url} alt={channelTitle} /> */}
+                    <LazyLoadImage src={channelIcon?.url} alt={channelTitle} effect="blur" />
+                    <p>{channelTitle}</p>
+                </div>
+            }
         </div>
     )
 }
