@@ -47,12 +47,12 @@ const ChannelScreen = () => {
                 <Row className='mt-2'>
                     {!loading
                         ? videos?.map(video => (
-                            <Col md={3} lg={3}>
+                            <Col md={3} lg={3} key={video.id}>
                                 <Video video={video} channelScreen />
                             </Col>
                         ))
-                        : [...Array(15)].map(() => (
-                            <Col md={3} lg={3}>
+                        : [...Array(15)].map((array, index) => (
+                            <Col md={3} lg={3} key={index}>
                                 <SkeletonTheme
                                     color='#343a40'
                                     highlightColor='#3c4147'>
