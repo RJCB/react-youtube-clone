@@ -26,7 +26,6 @@ export const getPopularVideos = () => async (dispatch, getState) => {
                 category: 'ALL'
             }
         })
-        console.log(data);
     } catch (error) {
         console.log(error.message);
         dispatch({
@@ -183,7 +182,7 @@ export const getSubscribedChannel = () => async (dispatch, getState) => {
     }
 }
 
-export const getVideoByChannel = (id) => async (dispatch) => {
+export const getVideosByChannel = (id) => async (dispatch, getState) => {
     try {
         dispatch({
             type: CHANNEL_VIDEOS_REQUEST
@@ -191,16 +190,16 @@ export const getVideoByChannel = (id) => async (dispatch) => {
         /** Fetching videos of a channel is a two step process
          * 1. get upload playlist id - uploads
          * */
-        const { data } = await request.get("/subscriptions", {
+        const { data: { items } } = await request.get("/channels", {
             params: {
                 part: "contentDetails",
                 id: id
             }
         })
 
-        const uploadPlaylistId = data.items[0].contentDetails.relatedPlaylists.uploads
+        const uploadPlaylistId = items[0].contentDetails.relatedPlaylists.uploads
         //2. get the videos using the uploads id
-        const { playlistData } = await request.get("/playlistItems", {
+        const { data } = await request.get("/playlistItems", {
             params: {
                 part: "contentDetails,snippet",
                 playlistId: uploadPlaylistId,
@@ -209,7 +208,7 @@ export const getVideoByChannel = (id) => async (dispatch) => {
         })
         dispatch({
             type: CHANNEL_VIDEOS_SUCCESS,
-            payload: playlistData.items
+            payload: data.items
         })
     } catch (error) {
         console.log(error.message);

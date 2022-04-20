@@ -29,7 +29,6 @@ const HomeScreen = () => {
         }
     }
 
-    console.log(videos);
     return (
         <Container>
             <CategoriesBar />

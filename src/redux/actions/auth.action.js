@@ -30,7 +30,7 @@ export const login = () => async dispatch => {
         })
 
     } catch (error) {
-        console.log(error);
+        console.log(error.message);
         dispatch({
             type: LOGIN_FAIL,
             payload: error.message

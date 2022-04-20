@@ -9,6 +9,7 @@ import numeral from 'numeral';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 import { Row, Col } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
+import "./_videoHorizontal.scss";
 
 const VideoHorizontal = ({ video, searchScreen, subscriptionScreen }) => {
     const { id, snippet: { channelId, channelTitle, description, title, publishedAt, thumbnails: { medium }, resourceId } } = video;

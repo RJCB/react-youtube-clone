@@ -3,13 +3,12 @@ import { Col, Container, Row } from 'react-bootstrap'
 import Skeleton, { SkeletonTheme } from 'react-loading-skeleton'
 import { useDispatch, useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
-import Video from '../../components/video/Video'
-import { getChannelDetails } from '../../redux/actions/channel.action'
-import { getVideosByChannel } from '../../redux/actions/videos.action'
+import Video from '../../video/Video';
+import { getChannelDetails } from '../../../redux/actions/channel.action';
+import { getVideosByChannel } from '../../../redux/actions/videos.action';
 
 import numeral from 'numeral'
-
-import './channelScreen.scss'
+import './_channelScreen.scss'
 
 const ChannelScreen = () => {
     const { channelId } = useParams()
@@ -30,12 +29,12 @@ const ChannelScreen = () => {
         <>
             <div className='px-5 py-2 my-2 d-flex justify-content-between align-items-center channelHeader'>
                 <div className='d-flex align-items-center'>
-                    <img src={snippet?.thumbnails?.default?.url} alt='' />
+                    <img src={snippet?.thumbnails?.default?.url} alt='' className="rounded-circle" />
 
                     <div className='ml-3 channelHeader__details'>
                         <h3>{snippet?.title}</h3>
                         <span>
-                            {numeral(statistics?.subscriberCount).format('0.a')}{' '}
+                            {numeral(statistics?.subscriberCount).format('0.a').toUpperCase()}{' '}
                             subscribers
                         </span>
                     </div>

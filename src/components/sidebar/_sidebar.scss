@@ -13,7 +13,12 @@
     left: 0;
 
     ul {
-        padding-left:0;
+        padding-left: 0;
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
 
         li {
             list-style: none;
@@ -39,6 +44,7 @@
             }
         }
     }
+
     &.open {
         transform: translateX(0);
     }
@@ -46,10 +52,12 @@
 
 @media(max-width:$breakpoint-medium) {
     .sidebar {
-        width:90px;
+        width: 90px;
+
         li {
             justify-content: center;
         }
+
         span {
             display: none;
         }
