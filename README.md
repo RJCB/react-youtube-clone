@@ -1,4 +1,4 @@
-# Youtube clone built using React JS and Redux.
+# Responsive Youtube clone built using React JS and Redux.
 
 This is a Youtube clone built using `React`, `Redux`, `redux-thunk`, Google `Firebase` for Google authentication and the `Youtube API`(worst structured API i've ever worked with).
 
